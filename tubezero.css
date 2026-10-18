@@ -1,0 +1,380 @@
+/* TubeZero - YouTube Focus & Distraction Zero Engine */
+/* Ultra-fast, zero-flicker CSS driven by HTML root classes */
+
+/* ==========================================================================
+   1. HOME FEED SUPPRESSION (Zero Distraction Search Hero)
+   ========================================================================== */
+html.tz-block-home ytd-browse[page-subtype="home"] #contents.ytd-rich-grid-renderer,
+html.tz-block-home ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
+html.tz-block-home ytd-browse[page-subtype="home"] #chips-wrapper,
+html.tz-block-home ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer,
+html.tz-block-home ytd-browse[page-subtype="home"] #header.ytd-rich-grid-renderer {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.tz-block-home ytd-browse[page-subtype="home"] #primary {
+  min-height: calc(100vh - 120px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* ==========================================================================
+   2. SHORTS ANNIHILATION
+   ========================================================================== */
+/* Left guide & mini-guide */
+html.tz-block-shorts ytd-guide-entry-renderer:has(a[title*="Shorts" i]),
+html.tz-block-shorts ytd-guide-entry-renderer:has(a[href*="/shorts"]),
+html.tz-block-shorts ytd-mini-guide-entry-renderer:has(a[title*="Shorts" i]),
+html.tz-block-shorts ytd-mini-guide-entry-renderer:has(a[href*="/shorts"]),
+html.tz-block-shorts #endpoint[title*="Shorts" i],
+html.tz-block-shorts a[title*="Shorts" i],
+/* Feed shelves and reels */
+html.tz-block-shorts ytd-rich-shelf-renderer[is-shorts],
+html.tz-block-shorts ytd-reel-shelf-renderer,
+html.tz-block-shorts ytd-shelf-renderer:has(span#title:has-text("Shorts")),
+html.tz-block-shorts ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+html.tz-block-shorts ytd-rich-item-renderer:has(a[href*="/shorts"]),
+html.tz-block-shorts ytd-video-renderer:has(a[href*="/shorts"]),
+html.tz-block-shorts yt-tab-shape[tab-title*="Shorts" i],
+html.tz-block-shorts [aria-label*="Shorts" i] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* ==========================================================================
+   3. SIDEBAR / RELATED VIDEOS (Watch Page Study Mode)
+   ========================================================================== */
+html.tz-block-sidebar #secondary,
+html.tz-block-sidebar #secondary.ytd-watch-flexy,
+html.tz-block-sidebar #related,
+html.tz-block-sidebar ytd-watch-next-secondary-results-renderer {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Center watch column when secondary is hidden */
+html.tz-block-sidebar ytd-watch-flexy[flexy] #primary.ytd-watch-flexy {
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+html.tz-block-sidebar ytd-watch-flexy[flexy] #player-container-outer,
+html.tz-block-sidebar ytd-watch-flexy[flexy] #below {
+  max-width: 1260px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* ==========================================================================
+   4. COMMENTS SECTION
+   ========================================================================== */
+html.tz-block-comments #comments,
+html.tz-block-comments ytd-comments {
+  display: none !important;
+}
+
+/* ==========================================================================
+   5. END-SCREEN CARDS & ANNOTATIONS
+   ========================================================================== */
+html.tz-block-endscreen .ytp-ce-element,
+html.tz-block-endscreen .ytp-endscreen-content,
+html.tz-block-endscreen .ytp-cards-teaser,
+html.tz-block-endscreen .ytp-paid-content-overlay {
+  display: none !important;
+}
+
+/* ==========================================================================
+   6. NOTIFICATIONS & EXPLORE/TRENDING
+   ========================================================================== */
+html.tz-block-notifications ytd-notification-topbar-button-renderer,
+html.tz-block-notifications ytd-guide-entry-renderer:has(a[href*="/feed/trending"]),
+html.tz-block-notifications ytd-guide-entry-renderer:has(a[href*="/feed/explore"]) {
+  display: none !important;
+}
+
+/* ==========================================================================
+   7. ZEN HERO SEARCH UI (TubeZero Custom Homepage)
+   ========================================================================== */
+#tubezero-zen-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 780px;
+  margin: 40px auto 60px auto;
+  padding: 48px 32px;
+  background: rgba(13, 16, 24, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  color: #f1f5f9;
+  text-align: center;
+  z-index: 99;
+  animation: tzFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tzFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.tz-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 26, 53, 0.12);
+  border: 1px solid rgba(255, 26, 53, 0.25);
+  color: #ff4d64;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.tz-hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff1a35;
+  box-shadow: 0 0 8px #ff1a35;
+}
+
+.tz-hero-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  line-height: 1.2;
+}
+
+.tz-hero-subtitle {
+  font-size: 14px;
+  color: #94a3b8;
+  margin: 0 0 32px 0;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+/* Zen Search Input */
+.tz-search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 24px;
+}
+
+.tz-search-input {
+  width: 100%;
+  height: 54px;
+  padding: 0 54px 0 20px;
+  background: rgba(18, 22, 34, 0.9);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.tz-search-input:focus {
+  border-color: #ff1a35;
+  background: rgba(22, 28, 42, 0.95);
+  box-shadow: 0 0 0 4px rgba(255, 26, 53, 0.18), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.tz-search-input::placeholder {
+  color: #64748b;
+}
+
+.tz-search-btn {
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  width: 40px;
+  height: 40px;
+  background: #ff1a35;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.tz-search-btn:hover {
+  background: #e60023;
+  transform: scale(1.04);
+}
+
+.tz-search-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Intentional Quick Links */
+.tz-intent-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 28px;
+  max-width: 640px;
+}
+
+.tz-intent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 15px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.tz-intent-pill:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.tz-intent-pill svg {
+  width: 14px;
+  height: 14px;
+  color: #94a3b8;
+}
+
+.tz-intent-pill:hover svg {
+  color: #ff4d64;
+}
+
+/* Quote Card */
+.tz-quote-box {
+  width: 100%;
+  max-width: 580px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.tz-quote-text {
+  font-size: 13px;
+  font-style: italic;
+  color: #94a3b8;
+  margin: 0 0 6px 0;
+  line-height: 1.45;
+}
+
+.tz-quote-author {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Temporary Pause / Unblock Button */
+.tz-unblock-trigger {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.tz-unblock-trigger:hover {
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   8. TUBEZERO MICRO-TOAST
+   ========================================================================== */
+#tubezero-toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  padding: 10px 18px;
+  background: rgba(13, 16, 24, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  color: #f1f5f9;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 9999999;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+#tubezero-toast.tz-toast-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+#tubezero-toast .tz-toast-icon {
+  width: 16px;
+  height: 16px;
+  color: #ff1a35;
+}
+
+/* ==========================================================================
+   9. STEALTH AD & PROMO CLEANER (Backup Shield)
+   ========================================================================== */
+ytd-ad-slot-renderer,
+ytd-in-feed-ad-layout-renderer,
+ytd-banner-promo-renderer,
+ytd-promoted-sparkles-web-renderer,
+ytd-promoted-video-renderer,
+#masthead-ad,
+.video-ads,
+.ytp-ad-module,
+.ytp-ad-overlay-container,
+.ytp-ad-text-overlay,
+ytd-merch-shelf-renderer,
+ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"] {
+  display: none !important;
+  visibility: hidden !important;
+}

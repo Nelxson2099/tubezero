@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TubeZero - Vista Previa de Suite</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background-color: #05070a;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+    .preview-header {
+      text-align: center;
+      max-width: 600px;
+    }
+    .preview-header h1 {
+      font-size: 28px;
+      color: #ffffff;
+      margin: 0 0 10px 0;
+    }
+    .preview-header p {
+      color: #94a3b8;
+      font-size: 14px;
+      margin: 0;
+    }
+    .preview-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      align-items: flex-start;
+      max-width: 1200px;
+      width: 100%;
+    }
+    .frame-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .frame-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #ff334b;
+    }
+    iframe {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+      background: #080a10;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-header">
+    <h1>TubeZero • Suite de Verificación</h1>
+    <p>Inspección del Popup y del Buscador Zen para YouTube</p>
+  </div>
+
+  <div class="preview-grid">
+    <div class="frame-box">
+      <div class="frame-title">Control Popup (340px)</div>
+      <iframe src="popup/popup.html" width="340" height="520"></iframe>
+    </div>
+  </div>
+</body>
+</html>
