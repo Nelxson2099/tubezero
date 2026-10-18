@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "TubeZero - YouTube Focus & Distraction Zero",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Transforma YouTube en un entorno de aprendizaje y estudio intencional. Elimina el feed infinito, bloquea Shorts y oculta recomendaciones.",
   "icons": {
     "16": "icons/icon16.png",

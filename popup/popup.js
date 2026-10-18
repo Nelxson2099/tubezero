@@ -3,6 +3,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const statShorts = document.getElementById('statShorts');
   const statTimeSaved = document.getElementById('statTimeSaved');
+  const statVideosToday = document.getElementById('statVideosToday');
+  const statVideosYesterday = document.getElementById('statVideosYesterday');
 
   const checkHome = document.getElementById('checkHome');
   const checkShorts = document.getElementById('checkShorts');
@@ -22,6 +24,19 @@ document.addEventListener('DOMContentLoaded', () => {
     return rem === 0 ? `${hours}h` : `${hours}h ${rem}m`;
   }
 
+  function getLocalDateString(d = new Date()) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function getYesterdayDateString() {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return getLocalDateString(d);
+  }
+
   // Load from chrome.storage
   chrome.storage.local.get(
     [
@@ -33,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
       'blockNotifications',
       'statsShortsBlocked',
       'statsTimeSavedMinutes',
+      'todayVideosCount',
+      'yesterdayVideosCount',
+      'videosDate',
       'preset'
     ],
     (res) => {
@@ -45,6 +63,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (statShorts) statShorts.textContent = res.statsShortsBlocked || 0;
       if (statTimeSaved) statTimeSaved.textContent = formatMinutes(res.statsTimeSavedMinutes || 0);
+
+      // Verificación de rotación diaria (Hoy vs Ayer)
+      const todayStr = getLocalDateString();
+      const yesterdayStr = getYesterdayDateString();
+
+      let todayCount = res.todayVideosCount || 0;
+      let yesterdayCount = res.yesterdayVideosCount || 0;
+      let savedDate = res.videosDate || '';
+
+      if (savedDate !== todayStr) {
+        if (savedDate === yesterdayStr) {
+          yesterdayCount = todayCount;
+        } else {
+          yesterdayCount = 0;
+        }
+        todayCount = 0;
+        savedDate = todayStr;
+        chrome.storage.local.set({
+          todayVideosCount: 0,
+          yesterdayVideosCount: yesterdayCount,
+          videosDate: todayStr
+        });
+      }
+
+      if (statVideosToday) statVideosToday.textContent = todayCount;
+      if (statVideosYesterday) statVideosYesterday.textContent = yesterdayCount;
 
       updatePresetUI(res.preset || 'study');
     }

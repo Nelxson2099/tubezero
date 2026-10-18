@@ -63,6 +63,7 @@ Haz clic en el ícono de **TubeZero** en la barra de extensiones para acceder a:
   - 🔒 **Total:** Oculta inicio, Shorts, barra lateral, comentarios, pantallas finales y notificaciones.
   - ⏸️ **Desactivado temporal:** Pausa las reglas temporalmente.
 - **Métricas de Tiempo Salvado:** Contador en tiempo real de Shorts bloqueados y minutos de atención protegidos.
+- **📊 Contador Diario de Videos (Hoy vs Ayer):** Rastrea con exactitud cuántos videos has reproducido hoy y cuántos viste ayer. Rota automáticamente al llegar la medianoche sin acumular semanas ni historial innecesario en tu navegador.
 
 ---
 

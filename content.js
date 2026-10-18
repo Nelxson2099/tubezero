@@ -268,8 +268,28 @@
   });
 
   // 6. SPA Routing & Lifecycle
+  let currentWatchedVideoId = '';
+
+  function checkVideoWatch() {
+    const path = window.location.pathname;
+    if (path === '/watch') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const videoId = urlParams.get('v');
+      if (videoId && videoId !== currentWatchedVideoId) {
+        currentWatchedVideoId = videoId;
+        try {
+          chrome.runtime.sendMessage({
+            action: 'register_video_watch',
+            videoId: videoId
+          });
+        } catch (e) {}
+      }
+    }
+  }
+
   function handleRoute() {
     checkShortsRedirect();
+    checkVideoWatch();
     autoSkipAds();
     renderZenHero();
   }
@@ -296,6 +316,7 @@
   // Fallback poller for dynamically rendered elements
   setInterval(() => {
     checkShortsRedirect();
+    checkVideoWatch();
     autoSkipAds();
     const isHome = window.location.pathname === '/' || window.location.pathname === '';
     if (isHome && currentSettings.blockHome && !document.getElementById('tubezero-zen-container')) {

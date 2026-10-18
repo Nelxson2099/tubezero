@@ -15,7 +15,18 @@ body {
   font-size: 13px;
   line-height: 1.4;
   padding: 16px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 590px;
+}
+
+body::-webkit-scrollbar {
+  width: 4px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
 }
 
 .tz-card {
@@ -137,6 +148,14 @@ body {
 
 .accent-green {
   color: #10b981;
+}
+
+.accent-cyan {
+  color: #06b6d4;
+}
+
+.accent-purple {
+  color: #a855f7;
 }
 
 /* Presets Bar */
