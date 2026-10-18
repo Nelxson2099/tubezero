@@ -94,6 +94,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   );
 
+  // Escuchar cambios en vivo en el almacenamiento
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local') {
+      if (changes.todayVideosCount !== undefined && statVideosToday) {
+        statVideosToday.textContent = changes.todayVideosCount.newValue;
+      }
+      if (changes.yesterdayVideosCount !== undefined && statVideosYesterday) {
+        statVideosYesterday.textContent = changes.yesterdayVideosCount.newValue;
+      }
+      if (changes.statsShortsBlocked !== undefined && statShorts) {
+        statShorts.textContent = changes.statsShortsBlocked.newValue;
+      }
+      if (changes.statsTimeSavedMinutes !== undefined && statTimeSaved) {
+        statTimeSaved.textContent = formatMinutes(changes.statsTimeSavedMinutes.newValue);
+      }
+    }
+  });
+
   function saveSetting(key, val) {
     const update = {};
     update[key] = val;

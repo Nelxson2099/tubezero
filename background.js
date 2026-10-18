@@ -31,6 +31,68 @@ function getYesterdayDateString() {
   return getLocalDateString(d);
 }
 
+function registerVideoWatch(videoId, sendResponse) {
+  if (!videoId || typeof videoId !== 'string') return;
+  const cleanId = videoId.trim();
+  if (!cleanId) return;
+
+  chrome.storage.local.get(
+    ['todayVideosCount', 'yesterdayVideosCount', 'videosDate', 'lastWatchedVideoId'],
+    (res) => {
+      const todayStr = getLocalDateString();
+      const yesterdayStr = getYesterdayDateString();
+
+      let todayCount = parseInt(res.todayVideosCount, 10) || 0;
+      let yesterdayCount = parseInt(res.yesterdayVideosCount, 10) || 0;
+      let savedDate = res.videosDate || '';
+      let lastId = res.lastWatchedVideoId || '';
+
+      // Si es exactamente el mismo video ya registrado, no duplicar conteo
+      if (cleanId === lastId) {
+        if (sendResponse) sendResponse({ status: 'already_counted', todayCount, yesterdayCount });
+        return;
+      }
+
+      // Si cambió de fecha (ej: sábado a domingo)
+      if (savedDate !== todayStr) {
+        if (savedDate === yesterdayStr) {
+          yesterdayCount = todayCount;
+        } else {
+          yesterdayCount = 0;
+        }
+        todayCount = 0;
+        savedDate = todayStr;
+      }
+
+      todayCount += 1;
+      lastId = cleanId;
+
+      chrome.storage.local.set({
+        todayVideosCount: todayCount,
+        yesterdayVideosCount: yesterdayCount,
+        videosDate: savedDate,
+        lastWatchedVideoId: lastId
+      }, () => {
+        if (sendResponse) sendResponse({ status: 'ok', todayCount, yesterdayCount });
+      });
+    }
+  );
+}
+
+// 1. Detección nativa por pestañas del navegador (funciona al instante sin recargar la pestaña)
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  const targetUrl = changeInfo.url || (tab && tab.url);
+  if (!targetUrl || !targetUrl.includes('youtube.com/watch')) return;
+
+  try {
+    const urlObj = new URL(targetUrl);
+    const videoId = urlObj.searchParams.get('v');
+    if (videoId) {
+      registerVideoWatch(videoId);
+    }
+  } catch (e) {}
+});
+
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.get(Object.keys(DEFAULT_SETTINGS), (res) => {
     const updates = {};
@@ -45,8 +107,13 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-// Message listener for stats and actions
+// 2. Detección por mensajes desde content script & gestión de shorts
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'register_video_watch') {
+    registerVideoWatch(message.videoId, sendResponse);
+    return true;
+  }
+
   if (message.action === 'increment_shorts_blocked') {
     chrome.storage.local.get(['statsShortsBlocked', 'statsTimeSavedMinutes'], (res) => {
       const currentShorts = (res.statsShortsBlocked || 0) + 1;
@@ -58,50 +125,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       });
       sendResponse({ status: 'ok', count: currentShorts });
     });
-    return true;
-  }
-
-  if (message.action === 'register_video_watch') {
-    chrome.storage.local.get(
-      ['todayVideosCount', 'yesterdayVideosCount', 'videosDate', 'lastWatchedVideoId'],
-      (res) => {
-        const todayStr = getLocalDateString();
-        const yesterdayStr = getYesterdayDateString();
-
-        let todayCount = res.todayVideosCount || 0;
-        let yesterdayCount = res.yesterdayVideosCount || 0;
-        let savedDate = res.videosDate || '';
-        let lastId = res.lastWatchedVideoId || '';
-
-        // Comprobar si cambió el día (ej: sábado a domingo)
-        if (savedDate !== todayStr) {
-          if (savedDate === yesterdayStr) {
-            yesterdayCount = todayCount;
-          } else {
-            // Pasaron 2 o más días sin registrar
-            yesterdayCount = 0;
-          }
-          todayCount = 0;
-          savedDate = todayStr;
-          lastId = '';
-        }
-
-        // Solo incrementar si es un video nuevo (evita spam al pausar/adelantar)
-        if (message.videoId && message.videoId !== lastId) {
-          todayCount += 1;
-          lastId = message.videoId;
-        }
-
-        chrome.storage.local.set({
-          todayVideosCount: todayCount,
-          yesterdayVideosCount: yesterdayCount,
-          videosDate: savedDate,
-          lastWatchedVideoId: lastId
-        }, () => {
-          sendResponse({ status: 'ok', todayCount, yesterdayCount });
-        });
-      }
-    );
     return true;
   }
   

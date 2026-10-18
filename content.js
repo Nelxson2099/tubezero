@@ -271,8 +271,8 @@
   let currentWatchedVideoId = '';
 
   function checkVideoWatch() {
-    const path = window.location.pathname;
-    if (path === '/watch') {
+    const url = window.location.href;
+    if (url.includes('/watch')) {
       const urlParams = new URLSearchParams(window.location.search);
       const videoId = urlParams.get('v');
       if (videoId && videoId !== currentWatchedVideoId) {
@@ -294,8 +294,10 @@
     renderZenHero();
   }
 
-  // Events for YouTube SPA
+  // Events for YouTube SPA (Listening on document and window)
+  document.addEventListener('yt-navigate-finish', handleRoute);
   window.addEventListener('yt-navigate-finish', handleRoute);
+  document.addEventListener('yt-page-data-updated', handleRoute);
   window.addEventListener('yt-page-data-updated', handleRoute);
   window.addEventListener('popstate', handleRoute);
   document.addEventListener('DOMContentLoaded', handleRoute);
